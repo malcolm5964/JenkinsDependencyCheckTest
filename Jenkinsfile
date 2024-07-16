@@ -9,7 +9,9 @@ pipeline {
 
 		stage('OWASP DependencyCheck') {
 			steps {
-				dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
+                withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
+                    dependencyCheck additionalArguments: "--format HTML --format XML --nvdApiKey ${env.NVD_API_KEY}", odcInstallation: 'Default'
+            	}
 			}
 		}
 	}	
